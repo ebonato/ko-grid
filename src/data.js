@@ -125,7 +125,7 @@ define([
             var context = ko.contextFor(cellElement);
             var row = context['row']();
             var column = context['column']();
-            var cell = row[column.property];
+            var cell = column.property.indexOf('.') == -1 ? row[column.property] : eval('row.'+ column.property);
 
             return [event, cell, row, column];
         };
@@ -357,7 +357,7 @@ define([
     }
 
     function updateCellElement(element, row, column) {
-        var cell = row[column.property];
+        var cell = column.property.indexOf('.') == -1 ? row[column.property] : eval('row.' + column.property);
 
         var hijacked = element[HIJACKED_KEY];
 
