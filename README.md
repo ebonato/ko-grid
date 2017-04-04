@@ -1,3 +1,39 @@
+# Fork Objectives
+
+This fork has some small changes over amazing work of Ben Schulz. 
+
+These changes are oriented to provide some extra functions to ko-grid:
+
+ - **Objective 1**: Work with complex objects -  [See Fork Binding](#fork-example-binding) 
+ - **Objective 2**: Work with **YOUR** observables/computed functions
+ - **Objective 3**: Makes columns footers (aggregates) works with observables (incluind string type)  
+ - **Objective 4**: Adds 'count' as an valid aggregate function
+ - **Objective 5**: Add an new row automacally when the user reachs the last row of the grid
+ - **Objective 6**: Handles cell double click
+ - **Objective 7**: Makes bundle work with knockout loaded globally (Makes easy for projects which doesn't use [**requirejs**](https://github.com/requirejs/requirejs) yet)
+ - **Objective 8**: Provides an extra extension for an new toolbar button in ko-grid for refreshing local data using ClientDataSource 
+
+Due modular architecture of ko-grid, its a bit more complicated to evaluate these changes, as there are changes spread over 8 different git repos and one **bundle everything** repo:
+
+ - [**ko-grid**](https://github.com/ebonato/ko-grid) - Core of ko-grid 
+   - Changes for Objective 1 and Objective 2
+ - [**ko-data-source**](https://github.com/ebonato/ko-data-source) - Core of data handling of ko-grid.
+   - Changes for Objective 1 and Objective 2
+ - [**aggregate**](https://github.com/ebonato/ko-grid-aggregate). Display aggregate information in the grid's footer.
+   - Changes for Objective 1, Objective 3 and Objective 4
+ - [**cell-navigation**](https://github.com/ebonato/ko-grid-cell-navigation). Navigate the grid using arrow keys, enter and tab.
+   - Changes for Objective 1 and Objective 5
+ - [**export**](https://github.com/ebonato/ko-grid-export). Offer an export of the grid's data as an excel sheet.
+   - Changes for Objective 1
+ - [**selection**](https://github.com/ebonato/ko-grid-selection). Single- or multi-selection of rows.
+   - Changes for Objective 6 
+ - [**sorting**](https://github.com/ebonato/ko-grid-sorting). Let users sort rows by column.
+   - Changes for Objective 1
+ - [**stringifyable**](https://github.com/ebonato/stringifyable). Small library for constructing functions used on ko-grid core.
+   - Changes for Objective 1
+ - [**ko-grid-bundle**](https://github.com/ebonato/ko-grid-bundle/). A bundle of ko-grid and all its extensions, ko-data-source and ko-indexed-repeat.
+   - Changes for Objective 7 and all objectives (bundle)
+
 # ko-grid [![Build Status](https://travis-ci.org/benschulz/ko-grid.svg?branch=master)](https://travis-ci.org/benschulz/ko-grid) [![Coverage Status](https://coveralls.io/repos/benschulz/ko-grid/badge.svg?branch=master)](https://coveralls.io/r/benschulz/ko-grid?branch=master)
 
 The ko-grid is an extensible UI component for displaying tabular data. It is [knockout](http://knockoutjs.com/)-based and its binding name is simply `grid`.
@@ -209,6 +245,33 @@ Same concept as `observableValueSelector`, but for observable entries. For an ex
     columnGroups: [{ label: 'Census', elements: [ 'population', 'percentage' ] }],
     extensions: {
         sorting: { initiallyBy: 'rank' }
+    }
+}">
+</div>
+```
+
+## Fork-Example-Binding
+
+```html
+<h2>Example: Array of Complex Objects</h2>
+
+<div data-bind="grid: {
+    config: 'some-configuration',
+    dataSource: complexObjectsDataSource,
+    primaryKey: 'id',
+    columns: [
+        { id: 'roomId', width: '50px', label: 'Room Name' },
+        { id: 'Allocation.Sun', width: '60px', label: 'Sun', classes: ['numeric'] }, 
+        { id: 'Allocation.Mon', width: '60px', label: 'Mon', classes: ['numeric'] }, 
+        { id: 'Allocation.Tue', width: '60px', label: 'Tue', classes: ['numeric'] }, 
+        { id: 'Allocation.Wed', width: '60px', label: 'Thu', classes: ['numeric'] }, 
+        { id: 'Allocation.Fri', width: '60px', label: 'Fri', classes: ['numeric'] }, 
+        { id: 'Allocation.Sat', width: '60px', label: 'Sat', classes: ['numeric'] }, 
+        { id: 'peopleQuantity', width: '60px', label: '# of People', classes: ['numeric'] },
+    ],
+    columnGroups: [{ label: 'Week', elements: [ 'Allocation.Sun', 'Allocation.Mon', 'Allocation.Tue', 'Allocation.Wed', 'Allocation.Fri', 'Allocation.Sat' ] }],
+    extensions: {
+        sorting: { initiallyBy: 'roomId' }
     }
 }">
 </div>
