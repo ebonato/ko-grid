@@ -21,9 +21,9 @@ define([
             /** @type {de.benshu.ko.dataSource.DataSource<?, ?, ?>} */
             this.source = bindingValue['dataSource'];
 
-            this.valueSelector = bindingValue['valueSelector'] || config['valueSelector'] || (p => p);
+            this.valueSelector = bindingValue['valueSelector'] || config['valueSelector'] || (p => ko.unwrap(p));
             this['valueSelector'] = this.valueSelector;
-            this.observableValueSelector = bindingValue['observableValueSelector'] || config['observableValueSelector'] || this.valueSelector;
+            this.observableValueSelector = bindingValue['observableValueSelector'] || config['observableValueSelector'] || (p => p);
             this['observableValueSelector'] = this.observableValueSelector;
 
             this.predicates = ko.observableArray(bindingValue.filters || []);
