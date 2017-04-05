@@ -33,6 +33,9 @@ Due modular architecture of ko-grid, its a bit more complicated to evaluate thes
    - Changes for Objective 1
  - [**ko-grid-bundle**](https://github.com/ebonato/ko-grid-bundle/). A bundle of ko-grid and all its extensions, ko-data-source and ko-indexed-repeat.
    - Changes for Objective 7 and all objectives (bundle)
+ - [**data-refresh**](https://github.com/ebonato/ko-grid-data-refresh/). A ko-grid extension providing a data refresh toggle.
+   - Changes for Objective 8
+
 
 # ko-grid [![Build Status](https://travis-ci.org/benschulz/ko-grid.svg?branch=master)](https://travis-ci.org/benschulz/ko-grid) [![Coverage Status](https://coveralls.io/repos/benschulz/ko-grid/badge.svg?branch=master)](https://coveralls.io/r/benschulz/ko-grid?branch=master)
 
