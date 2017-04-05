@@ -518,7 +518,7 @@ text = {
     throw new Error('Dynamic load not allowed: ' + id);
   }
 };
-text_ko_grid_columnshtmltemplate = '<colgroup class="ko-grid-colgroup">\n    <col class="ko-grid-col" data-bind="indexedRepeat: { forEach: columns.displayed, indexedBy: \'id\', as: \'column\' }" data-repeat-bind="__gridColumn: column()">\n</colgroup>';
+text_ko_grid_columnshtmltemplate = '<colgroup class="ko-grid-colgroup">\r\n    <col class="ko-grid-col" data-bind="indexedRepeat: { forEach: columns.displayed, indexedBy: \'id\', as: \'column\' }" data-repeat-bind="__gridColumn: column()">\r\n</colgroup>';
 
 ko_grid_columns = function (ko, js, columnsTemplate) {
   var TO_STRING_VALUE_RENDERER = function (cellValue) {
@@ -805,7 +805,7 @@ stringifyable = function (onefold_js) {
     return {
       propertyAccessor: function (propertyName) {
         var fn = function (owner) {
-          return owner[propertyName];
+          return propertyName.indexOf('.') == -1 ? owner[propertyName] : eval('owner.' + propertyName);
         };
         makeFunction(fn);
         makeStringifyable(fn, function () {
@@ -1001,7 +1001,7 @@ stringifyable = function (onefold_js) {
   }(stringifyable_internal);
   return stringifyable;
 }(onefold_js);
-text_ko_grid_datahtmltemplate = '<tbody class="ko-grid-tbody" data-bind="_gridWidth: columns.combinedWidth() + \'px\'">\n    <tr class="ko-grid-tr ko-grid-row"\n        data-bind="indexedRepeat: {\n            forEach: data.rows.displayed,\n            indexedBy: function(r) { return grid.data.observableValueSelector(ko.unwrap(r[grid.primaryKey])); },\n            as: \'row\',\n            at: \'rowIndex\',\n            beforeElementRecycling: data.rows.__handleElementRecycling,\n            afterElementRecycled: data.rows.__handleElementRecycled,\n            allowDeviation: true,\n            onDeviation: data.rows.__handleDisplayedRowsDeviate,\n            onSynchronization: data.rows.__handleDisplayedRowsSynchronized }"\n        data-repeat-bind="__gridRow: { classify: grid.data.rows.__classify, row: row, index: rowIndex }">\n\n        <td data-bind="indexedRepeat: { forEach: columns.displayed, indexedBy: \'id\', as: \'column\', allowElementRecycling: false }"\n            data-repeat-bind="__gridCell: { row: row, column: column }"></td>\n    </tr>\n</tbody>';
+text_ko_grid_datahtmltemplate = '<tbody class="ko-grid-tbody" data-bind="_gridWidth: columns.combinedWidth() + \'px\'">\r\n    <tr class="ko-grid-tr ko-grid-row"\r\n        data-bind="indexedRepeat: {\r\n            forEach: data.rows.displayed,\r\n            indexedBy: function(r) { return grid.data.observableValueSelector(ko.unwrap(r[grid.primaryKey])); },\r\n            as: \'row\',\r\n            at: \'rowIndex\',\r\n            beforeElementRecycling: data.rows.__handleElementRecycling,\r\n            afterElementRecycled: data.rows.__handleElementRecycled,\r\n            allowDeviation: true,\r\n            onDeviation: data.rows.__handleDisplayedRowsDeviate,\r\n            onSynchronization: data.rows.__handleDisplayedRowsSynchronized }"\r\n        data-repeat-bind="__gridRow: { classify: grid.data.rows.__classify, row: row, index: rowIndex }">\r\n\r\n        <td data-bind="indexedRepeat: { forEach: columns.displayed, indexedBy: \'id\', as: \'column\', allowElementRecycling: false }"\r\n            data-repeat-bind="__gridCell: { row: row, column: column }"></td>\r\n    </tr>\r\n</tbody>';
 
 ko_grid_data = function (ko, js, stringifyable, ApplicationEventDispatcher, dataTemplate) {
   var TEXT_NODE = window.Node.TEXT_NODE;
@@ -1018,10 +1018,12 @@ ko_grid_data = function (ko, js, stringifyable, ApplicationEventDispatcher, data
       /** @type {de.benshu.ko.dataSource.DataSource<?, ?, ?>} */
       this.source = bindingValue['dataSource'];
       this.valueSelector = bindingValue['valueSelector'] || config['valueSelector'] || function (p) {
-        return p;
+        return ko.unwrap(p);
       };
       this['valueSelector'] = this.valueSelector;
-      this.observableValueSelector = bindingValue['observableValueSelector'] || config['observableValueSelector'] || this.valueSelector;
+      this.observableValueSelector = bindingValue['observableValueSelector'] || config['observableValueSelector'] || function (p) {
+        return p;
+      };
       this['observableValueSelector'] = this.observableValueSelector;
       this.predicates = ko.observableArray(bindingValue.filters || []);
       this['predicates'] = this.predicates;
@@ -1118,7 +1120,7 @@ ko_grid_data = function (ko, js, stringifyable, ApplicationEventDispatcher, data
       var context = ko.contextFor(cellElement);
       var row = context['row']();
       var column = context['column']();
-      var cell = row[column.property];
+      var cell = column.property.indexOf('.') == -1 ? row[column.property] : eval('row.' + column.property);
       return [
         event,
         cell,
@@ -1322,7 +1324,7 @@ ko_grid_data = function (ko, js, stringifyable, ApplicationEventDispatcher, data
     init(element, row, column);
   }
   function updateCellElement(element, row, column) {
-    var cell = row[column.property];
+    var cell = column.property.indexOf('.') == -1 ? row[column.property] : eval('row.' + column.property);
     var hijacked = element[HIJACKED_KEY];
     // TODO since there may be thousands of cells we want to keep the dependency count at two (row+cell) => peek => need separate change handler for cellClasses
     // TODO should setting the className be moved to init?
@@ -1342,7 +1344,7 @@ ko_grid_data = function (ko, js, stringifyable, ApplicationEventDispatcher, data
   }
   return data;
 }(knockout, onefold_js, stringifyable, ko_grid_application_event_dispatcher, text_ko_grid_datahtmltemplate);
-text_ko_grid_headershtmltemplate = '<thead class="ko-grid-thead" data-bind="_gridWidth: columns.combinedWidth() + \'px\'">\n    <!--before:headers-->\n    <tr class="ko-grid-tr ko-grid-headers"\n        data-bind="indexedRepeat: { forEach: headers.__rows, indexedBy: \'__rowId\', as: \'headerRow\' }"\n        data-repeat-bind="click: headers.__handleClick">\n\n        <th class="ko-grid-th"\n            data-bind="indexedRepeat: { forEach: headerRow(), indexedBy: \'id\', as: \'header\' }"\n            data-repeat-bind="__gridHeader: header"></th>\n    </tr>\n    <!--after:headers-->\n</thead>';
+text_ko_grid_headershtmltemplate = '<thead class="ko-grid-thead" data-bind="_gridWidth: columns.combinedWidth() + \'px\'">\r\n    <!--before:headers-->\r\n    <tr class="ko-grid-tr ko-grid-headers"\r\n        data-bind="indexedRepeat: { forEach: headers.__rows, indexedBy: \'__rowId\', as: \'headerRow\' }"\r\n        data-repeat-bind="click: headers.__handleClick">\r\n\r\n        <th class="ko-grid-th"\r\n            data-bind="indexedRepeat: { forEach: headerRow(), indexedBy: \'id\', as: \'header\' }"\r\n            data-repeat-bind="__gridHeader: header"></th>\r\n    </tr>\r\n    <!--after:headers-->\r\n</thead>';
 
 ko_grid_headers = function (ko, js, ApplicationEventDispatcher, headersTemplate) {
   var document = window.document, Node = window.Node;
@@ -1786,7 +1788,7 @@ ko_grid_extensions = function (ko, js) {
   };
   return extensions;
 }(knockout, onefold_js);
-text_ko_grid_gridhtmltemplate = '<div class="ko-grid">\n    <!--before:grid-->\n    <div class="ko-grid-table-container">\n        <!--before:table-->\n        <div class="ko-grid-table-scroller-padding">\n            <div class="ko-grid-table-scroller">\n                <table class="ko-grid-table" data-bind="_gridWidth: columns.combinedWidth() + \'px\'">\n                    <!--columns-->\n                    <!--head-->\n                    <tfoot class="ko-grid-tfoot" data-bind="_gridWidth: columns.combinedWidth() + \'px\'"><!--tfoot--></tfoot>\n                    <!--body-->\n                </table>\n            </div>\n        </div>\n        <!--after:table-->\n    </div>\n    <!--after:grid-->\n</div>';
+text_ko_grid_gridhtmltemplate = '<div class="ko-grid">\r\n    <!--before:grid-->\r\n    <div class="ko-grid-table-container">\r\n        <!--before:table-->\r\n        <div class="ko-grid-table-scroller-padding">\r\n            <div class="ko-grid-table-scroller">\r\n                <table class="ko-grid-table" data-bind="_gridWidth: columns.combinedWidth() + \'px\'">\r\n                    <!--columns-->\r\n                    <!--head-->\r\n                    <tfoot class="ko-grid-tfoot" data-bind="_gridWidth: columns.combinedWidth() + \'px\'"><!--tfoot--></tfoot>\r\n                    <!--body-->\r\n                </table>\r\n            </div>\r\n        </div>\r\n        <!--after:table-->\r\n    </div>\r\n    <!--after:grid-->\r\n</div>';
 
 ko_grid_binding = function (req, ko, js, ApplicationEventDispatcher) {
   var require = req;

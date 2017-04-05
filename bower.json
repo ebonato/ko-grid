@@ -1,8 +1,8 @@
 {
   "name": "ko-grid",
   "main": "dist/ko-grid.js",
-  "description": "An extensible UI component for displaying tabular data.",
-  "authors": ["Ben Schulz (https://github.com/benschulz)"],
+  "description": "ebonato fork: An extensible UI component for displaying tabular data.",
+  "authors": ["Eduardo Bonato (https://github.com/ebonato)"],
   "license": "BSD-3-Clause",
   "keywords": [
     "grid",
@@ -10,16 +10,16 @@
   ],
   "repository": {
     "type": "git",
-    "url": "http://github.com/benschulz/ko-grid.git"
+    "url": "http://github.com/ebonato/ko-grid.git"
   },
   "dependencies": {
     "knockout": "^3.3.0",
-    "ko-data-source": "benschulz/ko-data-source",
+    "ko-data-source": "ebonato/ko-data-source",
     "ko-indexed-repeat": "benschulz/ko-indexed-repeat"
   },
   "devDependencies": {
     "onefold-dom": "benschulz/onefold-dom",
     "onefold-js": "benschulz/onefold-js",
-    "stringifyable": "benschulz/stringifyable"
+    "stringifyable": "ebonato/stringifyable"
   }
 }

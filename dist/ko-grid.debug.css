@@ -58,12 +58,12 @@
 }
 /* BORDER */
 .ko-grid {
-  border: 1px solid #e5e5e5;
+  border: 1px solid #E5E5E5;
 }
 .ko-grid-th,
 .ko-grid-td,
 .ko-grid-tf {
-  border: 1px solid #e5e5e5;
+  border: 1px solid #E5E5E5;
 }
 .ko-grid-tr:first-child .ko-grid-th {
   border-top-width: 0;
@@ -80,7 +80,7 @@
 }
 .ko-grid-column-header,
 .ko-grid-column-group-header {
-  border-bottom: 2px solid #4495da;
+  border-bottom: 2px solid #4495DA;
 }
 .ko-grid-tf {
   border-top-width: 0;
@@ -102,11 +102,11 @@
 }
 .ko-grid-table-scroller-padding {
   border-style: solid;
-  border-top-color: #f6f6f6;
+  border-top-color: #F6F6F6;
   border-bottom-color: white;
 }
 .ko-grid-thead {
-  background-color: #f6f6f6;
+  background-color: #F6F6F6;
 }
 .alternate.ko-grid-row {
   background-color: #eef6fc;
