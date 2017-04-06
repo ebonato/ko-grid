@@ -4,7 +4,7 @@ This fork has some small changes over amazing work of Ben Schulz.
 
 These changes are oriented to provide some extra functions to ko-grid:
 
- - **Objective 1**: Work with complex objects -  [See Fork Binding](#fork-example-binding) 
+ - **Objective 1**: Work with complex objects -  [See Complex Objects Binding](#complex-objects-binding) 
  - **Objective 2**: Work with **YOUR** observables/computed functions
  - **Objective 3**: Makes columns footers (aggregates) works with observables (incluind string type)  
  - **Objective 4**: Adds 'count' as an valid aggregate function
@@ -253,7 +253,7 @@ Same concept as `observableValueSelector`, but for observable entries. For an ex
 </div>
 ```
 
-## Fork-Example-Binding
+## complex-objects-binding
 
 ```html
 <h2>Example: Array of Complex Objects</h2>
