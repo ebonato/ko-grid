@@ -9,5 +9,8 @@
     "grunt": "^0.4.5",
     "grunt-cli": "^0.1.13",
     "grunt-commons": "benschulz/grunt-commons"
+  },
+  "dependencies": {
+    "mocha": "^5.0.4"
   }
 }
